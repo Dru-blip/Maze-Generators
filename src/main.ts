@@ -2,6 +2,7 @@ import Cell from './cell'
 import  generators from './generators'
 import solvers from './solvers'
 import './style.css'
+import { resetGrid } from './utils'
 
 const grid: Cell[][] = []
 
@@ -15,8 +16,8 @@ const width: number = 900
 const height: number = 900;
 
 // default cell width and height
-let cellWidth: number =30
-let cellHeight: number = 30
+let cellWidth: number =40
+let cellHeight: number = 40
 
 let no_cols: number = Math.floor(width / cellWidth)
 let no_rows: number = Math.floor(height / cellHeight)
@@ -33,10 +34,11 @@ for (let i = 0; i < no_rows; i++) {
         newCell.setAttribute("id", `${i}-${j}`)
         newCell.style.width = `${cellWidth}px`
         newCell.style.height = `${cellHeight}px`
-        newCell.classList.add('cell')
 
         container?.appendChild(newCell)
-        row.push(new Cell(i, j, cellWidth, cellHeight, false,false))
+        const cell=new Cell(i, j, cellWidth, cellHeight, false,false)
+        newCell.classList.add('cell')
+        row.push(cell)
     }
     grid.push(row)
 }
@@ -45,6 +47,8 @@ for (let i = 0; i < no_rows; i++) {
 
 
 generateBtn.addEventListener("click", () => {
+    resetGrid(grid)
+
     let algotithm=algorithmSelector.value
     let path:Cell[]=[]
 
@@ -63,6 +67,10 @@ generateBtn.addEventListener("click", () => {
         }
         case 'random-walk':{
             path=generators.randomWalk(grid, no_rows, no_cols)
+            break
+        }
+        case 'hunt-kill':{
+            path=generators.huntAndKill(grid,no_rows,no_cols)
             break
         }
         default:{

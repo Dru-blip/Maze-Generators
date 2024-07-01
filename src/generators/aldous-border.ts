@@ -1,11 +1,13 @@
 import Cell from "../cell";
-import { anyUnvisitedCells, getRandomNumber, removeWall, removeWalls } from "../utils";
+import { getRandomNumber,  removeWalls } from "../utils";
 
 
 export const randomWalk=(grid:Cell[][],rows:number,cols:number)=>{
     let path:Cell[]=[]
 
     let current=grid[0][0]
+    
+    // no of unvisited cells
     let remaining=rows*cols
 
     current.visited=true

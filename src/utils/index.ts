@@ -18,10 +18,16 @@ export const manhattanDistance = (a: Cell, b: Cell) => {
 }
 
 
-
-
 export const getRandomNumber=(max:number)=>{
     return Math.floor(Math.random() * max)
+}
+
+export const resetGrid=(grid:Cell[][])=>{
+    for(const row of grid){
+        for(const cell of row){
+            cell.reset()
+        }
+    }
 }
 
 export const constructWalkablePath = (cameFrom: Map<Cell, Cell>, start: Cell, end: Cell) => {
