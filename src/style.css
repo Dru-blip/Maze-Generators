@@ -1,0 +1,62 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #282828;
+}
+
+
+.actions{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+select{
+    margin-bottom: 10px;
+}
+.generate-btn{
+    border:none;
+    border-radius: 10px;
+    padding: 10px;
+    width: 120px;
+    margin-left: 10px;
+    cursor: pointer;
+    background-color: #108d8d;
+    color: white;
+    outline: none;
+    margin-bottom: 10px;
+}
+
+
+
+.solved-cell{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.indicator{
+    width: 15px;
+    height: 15px;
+    border-radius: 100%;
+    background-color: indigo;
+}
+
+
+ion-icon{
+    font-size: 32px;
+    color: #d65d08;
+}
+
+.cell{
+    border: 1px solid black;
+}

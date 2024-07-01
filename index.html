@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite + TS</title>
+</head>
+
+<body>
+  <div id="container"></div>
+  <div class="actions">
+    <select id="algo-selector">
+      <option value="dfs">dfs</option>
+      <option value="binary-tree">binary tree</option>
+      <option value="random-walk">aldous-border</option>
+      <option value="prims">prims</option>
+      <option value="kruskals">kruskals</option>
+    </select>
+    <button id="generate" class="generate-btn">Generate</button>
+    <button id="solver" class="generate-btn">Solver</button>
+  </div>
+
+
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
