@@ -1,7 +1,5 @@
 import { getRandomNumber, manhattanDistance } from "./utils"
 
-
-
 export default class Cell {
     public walls = { left: true, right: true, top: true, bottom: true }
     public parent:Cell=this
@@ -96,11 +94,12 @@ export default class Cell {
 
         // ele.style.backgroundColor = "#427b58"
         // indicator.style.borderRadius="10px"
-
+        ele.classList.remove("highlight-cell")
+        ele.classList.remove('visited-cell')
         ele.classList.add("solved-cell")
         // ele.appendChild(indicator)
         // ele.appendChild(line)
-        ele.style.backgroundColor = "#98971a"
+        // ele.style.backgroundColor = "#98971a"
         // ele.style.backgroundColor = "#076678"
 
         // ele.style.backgroundColor = "#83a598"

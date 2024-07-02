@@ -1,5 +1,5 @@
 import Cell from "../cell";
-import { getRandomCell, removeWalls } from "../utils";
+import {  removeWalls } from "../utils";
 
 
 const hunt=(grid:Cell[][],rows:number,cols:number,path:Cell[])=>{
@@ -7,19 +7,19 @@ const hunt=(grid:Cell[][],rows:number,cols:number,path:Cell[])=>{
         for(let col=0;col<cols;col++){
             let cell=grid[row][col]
             if(!cell.visited){
-                let neighbors=cell.getNeighbors(grid,rows,cols).filter((c)=>c.visited)
-                if(neighbors.length>0){
-                    return cell
+                let neighbor=cell.getRandomVisitedNeighbor(grid,rows,cols)
+                if(neighbor){
+                    return [cell,neighbor]
                 }
             }
-            path.push(cell)
+            // path.push(cell)
         }
     }
     return undefined
 }
 
 export const huntAndKill=(grid:Cell[][],rows:number,cols:number)=>{
-    let currentCell=getRandomCell(grid)
+    let currentCell=grid[0][0]
 
     let remaining=rows*cols
     let path:Cell[]=[]
@@ -33,15 +33,17 @@ export const huntAndKill=(grid:Cell[][],rows:number,cols:number)=>{
             neighbor.visited=true
             remaining--
             path.push(neighbor)
-            removeWalls(currentCell,neighbor)
+            removeWalls(neighbor,currentCell)
             currentCell=neighbor
         }else{
-            let cell=hunt(grid,rows,cols,path)
+            let cell
+            [currentCell,cell]=hunt(grid,rows,cols,path)!
             if(cell){
-                currentCell=cell
-                remaining--
                 currentCell.visited=true
+                remaining--
                 path.push(currentCell)
+                removeWalls(currentCell,cell)
+                currentCell=cell                
             }
         }
     }

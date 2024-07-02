@@ -1,5 +1,5 @@
 import Cell from "../cell";
-import { checkBounds, find, getRandomCell, getRandomNumber, removeWalls, union } from "../utils";
+import { checkBounds, find,  removeWalls, union } from "../utils";
 
 
 interface Edge {

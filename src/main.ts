@@ -16,8 +16,8 @@ const width: number = 900
 const height: number = 900;
 
 // default cell width and height
-let cellWidth: number =40
-let cellHeight: number = 40
+let cellWidth: number =30
+let cellHeight: number = 30
 
 let no_cols: number = Math.floor(width / cellWidth)
 let no_rows: number = Math.floor(height / cellHeight)
@@ -85,11 +85,11 @@ generateBtn.addEventListener("click", () => {
 
         setTimeout(() => {
             cell.highlight()
-        }, index * 5)
+        }, index * 4)
 
         setTimeout(() => {
             cell.draw()
-        }, (index + 1) * 5)
+        }, (index + 1) * 4)
     }
 })
 
