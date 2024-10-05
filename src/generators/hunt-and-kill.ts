@@ -10,7 +10,7 @@ import { getRandomCell, removeWalls } from "../utils";
  * @param {Cell[]} path - The current path of visited cells.
  * @return {[Cell, Cell] | undefined} An array containing the unvisited cell and its visited neighbor, or undefined if no such pair is found.
  */
-const hunt = (grid: Cell[][], rows: number, cols: number, path: Cell[]) => {
+const hunt = (grid: Cell[][], rows: number, cols: number) => {
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < cols; col++) {
       let cell = grid[row][col];
@@ -56,7 +56,7 @@ export const huntAndKill = (grid: Cell[][], rows: number, cols: number) => {
       currentCell = neighbor;
     } else {
       let cell;
-      [currentCell, cell] = hunt(grid, rows, cols, path)!;
+      [currentCell, cell] = hunt(grid, rows, cols)!;
       if (cell) {
         currentCell.visited = true;
         remaining--;
