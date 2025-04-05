@@ -1,8 +1,9 @@
-import { getRandomNumber, manhattanDistance } from "./utils";
+import { manhattanDistance, getRandomNumber } from "./utils";
 
 export default class Cell {
   public walls = { left: true, right: true, top: true, bottom: true };
   public parent: Cell = this;
+
   constructor(
     public row: number,
     public col: number,
@@ -16,31 +17,11 @@ export default class Cell {
     public hcost: number = 0
   ) {}
 
-  /**
-   * Calculates the heuristic cost (h-cost) of the current cell relative to another cell.
-   *
-   * @param {Cell} other - The cell to which the h-cost is being calculated.
-   * @return {void} No return value. The h-cost is stored in the current cell's hcost property.
-   */
   calculateHcost(other: Cell) {
     this.hcost = manhattanDistance(this, other);
   }
 
-  /**
-   * Retrieves the neighboring cells of the current cell within a grid.
-   *
-   * @param {Cell[][]} grid - A 2D array of Cell objects representing the grid.
-   * @param {number} rows - The number of rows in the grid.
-   * @param {number} cols - The number of columns in the grid.
-   * @param {number[][]} [offsets] - An optional array of offset pairs to use for neighbor calculation.
-   * @return {Cell[]} An array of neighboring Cell objects.
-   */
-  getNeighbors(
-    grid: Cell[][],
-    rows: number,
-    cols: number,
-    offsets?: number[][]
-  ) {
+  getNeighbors(grid: Cell[][], rows: number, cols: number, offsets?: number[][]) {
     let neighbors = [];
     if (!offsets) {
       offsets = [
@@ -50,180 +31,97 @@ export default class Cell {
         [0, -1],
       ];
     }
-    for (const offset of offsets) {
-      let row = this.row + offset[0];
-      let col = this.col + offset[1];
-      if (row >= 0 && row < rows && col >= 0 && col < cols) {
-        neighbors.push(grid[row][col]);
+    for (const [dx, dy] of offsets) {
+      const newRow = this.row + dx;
+      const newCol = this.col + dy;
+      if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols) {
+        neighbors.push(grid[newRow][newCol]);
       }
     }
     return neighbors;
   }
 
-  /**
-   * Retrieves a random visited neighboring cell within a grid.
-   *
-   * @param {Cell[][]} grid - A 2D array of Cell objects representing the grid.
-   * @param {number} rows - The number of rows in the grid.
-   * @param {number} cols - The number of columns in the grid.
-   * @return {Cell | null} A random visited neighboring Cell object, or null if no visited neighbors exist.
-   */
-  getRandomVisitedNeighbor(
-    grid: Cell[][],
-    rows: number,
-    cols: number
-  ): Cell | null {
-    let neighbors = this.getNeighbors(grid, rows, cols);
-    let visitedNeighbors = neighbors.filter((neighbor) => neighbor.visited);
-    if (visitedNeighbors.length > 0) {
-      return visitedNeighbors[getRandomNumber(visitedNeighbors.length)];
-    }
-    return null;
+  getRandomVisitedNeighbor(grid: Cell[][], rows: number, cols: number): Cell | null {
+    const visited = this.getNeighbors(grid, rows, cols).filter((c) => c.visited);
+    return visited.length > 0 ? visited[getRandomNumber(visited.length)] : null;
   }
 
-  /**
-   * Retrieves a random unvisited neighboring cell within a grid.
-   *
-   * @param {Cell[][]} grid - A 2D array of Cell objects representing the grid.
-   * @param {number} rows - The number of rows in the grid.
-   * @param {number} cols - The number of columns in the grid.
-   * @param {number[][]} [offsets] - An optional array of offset pairs to use for neighbor calculation.
-   * @return {Cell | undefined} A random unvisited neighboring Cell object, or undefined if no unvisited neighbors exist.
-   */
-  getRandomNeighbor(
-    grid: Cell[][],
-    rows: number,
-    cols: number,
-    offsets?: number[][]
-  ) {
-    let neighbors = this.getNeighbors(grid, rows, cols, offsets);
-    neighbors = neighbors.filter((cell) => !cell.visited);
-    if (neighbors.length > 0) {
-      let rand = getRandomNumber(neighbors.length);
-      return neighbors[rand];
-    } else {
-      return undefined;
-    }
+  getRandomNeighbor(grid: Cell[][], rows: number, cols: number, offsets?: number[][]) {
+    const unvisited = this.getNeighbors(grid, rows, cols, offsets).filter((c) => !c.visited);
+    return unvisited.length > 0 ? unvisited[getRandomNumber(unvisited.length)] : undefined;
   }
 
-  /**
-   * Highlights a cell in the grid by adding the 'highlight-cell' class to its DOM element.
-   *
-   * @return {void} No return value.
-   */
-  highlight() {
-    let ele = document.getElementById(`${this.row}-${this.col}`)!;
-    ele.classList.add("highlight-cell");
-  }
-
-  /**
-   * Draws a solved cell in the grid by adding the 'solved-cell' class to its DOM element and setting an indicator icon based on the walkable direction.
-   *
-   * @return {void} No return value.
-   */
-  drawSolved() {
-    let ele = document.getElementById(`${this.row}-${this.col}`)!;
-    let indicator = document.createElement("ion-icon");
-    // let line = document.createElement("hr")
-
-    // line.style.width="20%"
-    // line.style.height="20%"
-    // line.style.borderRadius="100%"
-    // line.style.backgroundColor="#98971a"
-    switch (this.walkableDirection) {
-      case "left": {
-        indicator.setAttribute("name", "chevron-back-outline");
-        break;
-      }
-      case "right": {
-        indicator.setAttribute("name", "chevron-forward-outline");
-        break;
-      }
-      case "top": {
-        indicator.setAttribute("name", "chevron-up-outline");
-        break;
-      }
-      case "bottom": {
-        indicator.setAttribute("name", "chevron-down-outline");
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-
-    // ele.style.backgroundColor = "#427b58"
-    // indicator.style.borderRadius="10px"
-    ele.classList.remove("highlight-cell");
-    ele.classList.remove("visited-cell");
-    ele.classList.add("solved-cell");
-    // ele.appendChild(indicator)
-    // ele.appendChild(line)
-    // ele.style.backgroundColor = "#98971a"
-    // ele.style.backgroundColor = "#076678"
-
-    // ele.style.backgroundColor = "#83a598"
-  }
-
-  /**
-   * Resets the cell to its initial state.
-   *
-   * Removes all border classes, solved and visited cell classes, and resets the cell's properties.
-   *
-   * @return {void}
-   */
   reset() {
-    let ele = document.getElementById(`${this.row}-${this.col}`)!;
-
-    ele.classList.remove("border-left");
-    ele.classList.remove("border-right");
-    ele.classList.remove("border-top");
-    ele.classList.remove("border-bottom");
-
-    ele.classList.remove("solved-cell");
-    ele.classList.remove("visited-cell");
-    ele.classList.add("cell");
-
     this.isWalked = false;
     this.visited = false;
     this.walls = { left: true, right: true, top: true, bottom: true };
     this.parent = this;
+    this.walkableDirection = "";
   }
 
-  /**
-   * Draws the cell on the grid by adding or removing CSS classes based on its properties.
-   *
-   * @return {void}
-   */
-  draw() {
-    let ele = document.getElementById(`${this.row}-${this.col}`)!;
-    ele.classList.remove("cell");
+  draw(ctx: CanvasRenderingContext2D) {
+    const x = this.col * this.cellWidth;
+    const y = this.row * this.cellHeight;
 
-    //top
-    if (this.walls["top"]) {
-      ele.classList.add("border-top");
+    // Base background
+    ctx.fillStyle = this.visited ? "#282828" : "#1d2021"; // visited vs unvisited
+    ctx.fillRect(x, y, this.cellWidth, this.cellHeight);
+
+    // Walls
+    ctx.strokeStyle = "#3c3836";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    if (this.walls.top) {
+      ctx.moveTo(x, y);
+      ctx.lineTo(x + this.cellWidth, y);
+    }
+    if (this.walls.right) {
+      ctx.moveTo(x + this.cellWidth, y);
+      ctx.lineTo(x + this.cellWidth, y + this.cellHeight);
+    }
+    if (this.walls.bottom) {
+      ctx.moveTo(x + this.cellWidth, y + this.cellHeight);
+      ctx.lineTo(x, y + this.cellHeight);
+    }
+    if (this.walls.left) {
+      ctx.moveTo(x, y + this.cellHeight);
+      ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+  }
+
+  drawSolved(ctx: CanvasRenderingContext2D) {
+    const x = this.col * this.cellWidth;
+    const y = this.row * this.cellHeight;
+
+    // Fill for solved path
+    ctx.fillStyle = "#458588"; // blue-green for solved path
+    ctx.fillRect(x, y, this.cellWidth, this.cellHeight);
+
+    // Directional arrow
+    ctx.fillStyle = "#d5c4a1"; // light neutral text color
+    ctx.font = `${this.cellWidth / 2}px sans-serif`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    let arrow = "";
+    switch (this.walkableDirection) {
+      case "left": arrow = "←"; break;
+      case "right": arrow = "→"; break;
+      case "top": arrow = "↑"; break;
+      case "bottom": arrow = "↓"; break;
     }
 
-    //left
-    if (this.walls["left"]) {
-      ele.classList.add("border-left");
+    if (arrow) {
+      ctx.fillText(arrow, x + this.cellWidth / 2, y + this.cellHeight / 2);
     }
+  }
 
-    //bottom
-    if (this.walls["bottom"]) {
-      ele.classList.add("border-bottom");
-    }
+  highlight(ctx: CanvasRenderingContext2D) {
+    const x = this.col * this.cellWidth;
+    const y = this.row * this.cellHeight;
 
-    //right
-    if (this.walls["right"]) {
-      ele.classList.add("border-right");
-    }
-
-    if (this.visited) {
-      ele.classList.remove("highlight-cell");
-      // ele.style.backgroundColor = "#0ABAB5"
-      ele.classList.add("visited-cell");
-      // ele.style.backgroundColor = "#d65d08"
-    }
+    ctx.fillStyle = "#665c54"; // dark tan/brown for highlighting
+    ctx.fillRect(x, y, this.cellWidth, this.cellHeight);
   }
 }
