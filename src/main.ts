@@ -1,14 +1,17 @@
-import "./style.css"
 import Cell from "./cell";
+import { CellPainter } from "./painter";
 import generators from "./generators";
+import { GridManager } from "./manager";
 import solvers from "./solvers";
-import { resetGrid } from "./utils";
+import "./style.css";
 
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d")!;
 const generateBtn = document.getElementById("generate")!;
 const solverBtn = document.getElementById("solver")!;
-const algorithmSelector = document.getElementById("algo-selector") as HTMLSelectElement;
+const algorithmSelector = document.getElementById(
+  "algo-selector",
+) as HTMLSelectElement;
 
 const width = 800;
 const height = 800;
@@ -16,64 +19,38 @@ const height = 800;
 canvas.width = width;
 canvas.height = height;
 
-let cellWidth = 20;
-let cellHeight = 20;
+const manager = new GridManager(width, height);
+const cellPainter = new CellPainter(ctx);
 
-let no_cols = Math.floor(width / cellWidth);
-let no_rows = Math.floor(height / cellHeight);
-
-const grid: Cell[][] = [];
-
-// Initialize grid (logic only, no HTML elements)
-const initGrid = () => {
-  for (let i = 0; i < no_rows; i++) {
-    let row: Cell[] = [];
-    for (let j = 0; j < no_cols; j++) {
-      const cell = new Cell(i, j, cellWidth, cellHeight, false, false);
-      row.push(cell);
-    }
-    grid.push(row);
-  }
-};
-
-// Draw all cells
-const drawGrid = () => {
-  ctx.clearRect(0, 0, width, height);
-  for (let row of grid) {
-    for (let cell of row) {
-      cell.draw(ctx);
-    }
-  }
-};
-
-initGrid();
-drawGrid();
+manager.initGrid();
+cellPainter.drawCells(manager);
 
 generateBtn.addEventListener("click", () => {
-  resetGrid(grid);
-  drawGrid();
+  const { grid, noCols, noRows } = manager;
+  manager.resetGrid();
+  cellPainter.drawCells(manager);
 
   let algorithm = algorithmSelector.value;
   let path: Cell[] = [];
 
   switch (algorithm) {
     case "prims":
-      path = generators.prims(grid, no_rows, no_cols);
+      path = generators.prims(grid, noRows, noCols);
       break;
     case "kruskals":
-      path = generators.kruskal(grid, no_rows, no_cols);
+      path = generators.kruskal(grid, noRows, noCols);
       break;
     case "binary-tree":
-      path = generators.binaryTree(grid, no_rows, no_cols);
+      path = generators.binaryTree(grid, noRows, noCols);
       break;
     case "random-walk":
-      path = generators.randomWalk(grid, no_rows, no_cols);
+      path = generators.randomWalk(grid, noRows, noCols);
       break;
     case "hunt-kill":
-      path = generators.huntAndKill(grid, no_rows, no_cols);
+      path = generators.huntAndKill(grid, noRows, noCols);
       break;
     default:
-      path = generators.dfs(grid, no_rows, no_cols);
+      path = generators.dfs(grid, noRows, noCols);
       break;
   }
 
@@ -81,27 +58,34 @@ generateBtn.addEventListener("click", () => {
     const cell = path[index];
 
     setTimeout(() => {
-      cell.highlight(ctx);
+      cellPainter.highlight(cell);
     }, index * 4);
 
-    setTimeout(() => {
-      cell.draw(ctx);
-    }, (index + 1) * 4);
+    setTimeout(
+      () => {
+        cellPainter.drawCell(cell);
+      },
+      (index + 1) * 4,
+    );
   }
 });
 
 solverBtn.addEventListener("click", () => {
-  let path = solvers.bfs(grid, grid[0][0], grid[no_rows - 1][no_cols - 1]);
+  const { grid, noCols, noRows } = manager;
+  let path = solvers.bfs(grid, grid[0][0], grid[noRows - 1][noCols - 1]);
 
   for (let index = 0; index < path.length; index++) {
     const cell = path[index];
 
     setTimeout(() => {
-      cell.highlight(ctx);
+      cellPainter.highlight(cell);
     }, index * 20);
 
-    setTimeout(() => {
-      cell.drawSolved(ctx);
-    }, (index + 1) * 20);
+    setTimeout(
+      () => {
+        cellPainter.drawCell(cell);
+      },
+      (index + 1) * 20,
+    );
   }
 });
