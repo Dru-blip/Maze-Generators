@@ -82,12 +82,13 @@ export const constructWalkablePath = (
   cameFrom: Map<Cell, Cell>,
   start: Cell,
   end: Cell
-) => {
+): Cell[] => {
   let path = [];
   let current = end;
-  while (current.row !== start.row || current.col !== start.col) {
-    path.push(current);
+  while (current &&current.row !== start.row || current.col !== start.col) {
     let next = cameFrom.get(current)!;
+    
+    path.push(current);
     current.walkableDirection = getWalkableDirection(current, next)!;
     current = next;
   }
@@ -233,7 +234,6 @@ export const getRandomCell = (grid: Cell[][]) => {
   return grid[row][col];
 };
 
-
 /**
  * Checks if there are any unvisited cells in a given grid.
  *
@@ -248,7 +248,6 @@ export const anyUnvisitedCells = (grid: Cell[][]) => {
   }
   return false;
 };
-
 
 /**
  * Returns the first unvisited cell in a given grid.
@@ -292,4 +291,14 @@ export const union = (a: Cell, b: Cell) => {
   if (set1 !== set2) {
     set2.parent = set1;
   }
+};
+
+export const midPoint = (a: Cell) => {
+  const topLeft = a.topLeft;
+  const bottomRight = a.bottomRight;
+
+  return {
+    x: (topLeft.x + bottomRight.x) / 2,
+    y: (topLeft.y + bottomRight.y) / 2,
+  };
 };

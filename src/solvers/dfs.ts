@@ -14,9 +14,10 @@ export const dfs = (grid: Cell[][], start: Cell, end: Cell) => {
   let stack: Cell[] = [];
   let cameFrom: Map<Cell, Cell> = new Map();
 
+
   stack.push(start);
 
-  while (stack.length > 0) {
+  while (stack.length > 0 ) {
     let current = stack.pop()!;
     if (current) {
       current.isWalked = true;
@@ -28,7 +29,6 @@ export const dfs = (grid: Cell[][], start: Cell, end: Cell) => {
       for (const neighbor of neighbors) {
         if (!neighbor.isWalked && isWalkable(current, neighbor)) {
           stack.push(neighbor);
-          neighbor.isWalked = true;
           cameFrom.set(neighbor, current);
         }
       }

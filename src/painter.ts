@@ -17,10 +17,10 @@ export class CellPainter {
     const x = cell.col * cell.cellWidth;
     const y = cell.row * cell.cellHeight;
 
-    this.ctx.fillStyle = cell.visited ? "#282828" : "#1d2021";
+    this.ctx.fillStyle = cell.visited ? "#3c3836" : "#282828"; // medium gray vs dark bg
     this.ctx.fillRect(x, y, cell.cellWidth, cell.cellHeight);
-
-    this.ctx.strokeStyle = "#3c3836";
+    
+    this.ctx.strokeStyle = "#504945"; // Gruvbox gray (lighter than #3c3836)
     this.ctx.lineWidth = 2;
     this.ctx.beginPath();
     if (cell.walls.top) {

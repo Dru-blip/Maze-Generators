@@ -14,7 +14,7 @@ export default class Cell {
     public walkableDirection: string = "",
     public fcost: number = 0,
     public gcost: number = 0,
-    public hcost: number = 0,
+    public hcost: number = 0
   ) {}
 
   calculateHcost(other: Cell) {
@@ -25,7 +25,7 @@ export default class Cell {
     grid: Cell[][],
     rows: number,
     cols: number,
-    offsets?: number[][],
+    offsets?: number[][]
   ) {
     let neighbors = [];
     if (!offsets) {
@@ -49,10 +49,10 @@ export default class Cell {
   getRandomVisitedNeighbor(
     grid: Cell[][],
     rows: number,
-    cols: number,
+    cols: number
   ): Cell | null {
     const visited = this.getNeighbors(grid, rows, cols).filter(
-      (c) => c.visited,
+      (c) => c.visited
     );
     return visited.length > 0 ? visited[getRandomNumber(visited.length)] : null;
   }
@@ -61,10 +61,10 @@ export default class Cell {
     grid: Cell[][],
     rows: number,
     cols: number,
-    offsets?: number[][],
+    offsets?: number[][]
   ) {
     const unvisited = this.getNeighbors(grid, rows, cols, offsets).filter(
-      (c) => !c.visited,
+      (c) => !c.visited
     );
     return unvisited.length > 0
       ? unvisited[getRandomNumber(unvisited.length)]
@@ -77,5 +77,33 @@ export default class Cell {
     this.walls = { left: true, right: true, top: true, bottom: true };
     this.parent = this;
     this.walkableDirection = "";
+  }
+
+  get topLeft() {
+    return {
+      x: this.col * this.cellWidth,
+      y: this.row * this.cellHeight,
+    };
+  }
+
+  get topRight() {
+    return {
+      x: (this.col + 1) * this.cellWidth,
+      y: this.row * this.cellHeight,
+    };
+  }
+
+  get bottomLeft() {
+    return {
+      x: this.col * this.cellWidth,
+      y: (this.row + 1) * this.cellHeight,
+    };
+  }
+
+  get bottomRight() {
+    return {
+      x: (this.col + 1) * this.cellWidth,
+      y: (this.row + 1) * this.cellHeight,
+    };
   }
 }
