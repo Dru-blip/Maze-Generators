@@ -14,22 +14,37 @@
     <canvas id="canvas"></canvas>
 
     <div class="actions">
-      <h2>Maze Controls</h2>
-      <label for="algo-selector">Algorithm:</label>
-      <select id="algo-selector">
-        <option value="dfs">Depth First Search</option>
-        <option value="binary-tree">Binary Tree</option>
-        <option value="random-walk">Aldous-Broder</option>
-        <option value="prims">Prim's</option>
-        <option value="kruskals">Kruskal's</option>
-        <option value="hunt-kill">Hunt & Kill</option>
-      </select>
+      <div>
+        <h2>Maze Controls</h2>
 
-      <button id="generate" class="btn">Generate</button>
-      <button id="solver" class="btn">Solve</button>
+        <label for="algo-selector">Algorithm:</label>
+        <select id="algo-selector">
+          <option value="dfs">Depth First Search</option>
+          <option value="binary-tree">Binary Tree</option>
+          <option value="random-walk">Aldous-Broder</option>
+          <option value="prims">Prim's</option>
+          <option value="kruskals">Kruskal's</option>
+          <option value="hunt-kill">Hunt & Kill</option>
+        </select>
+        <div id="btns">
+          <button id="generate" class="btn">Generate</button>
+          <button id="solver" class="btn">Solve</button>
+        </div>
+
+      </div>
+
+      <div class="github-link">
+        <a href="https://github.com/Dru-blip/Maze-Generators" target="_blank" class="btn">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub Logo"
+            width="20" height="20" style="vertical-align: middle; margin-right: 8px;">
+          View on GitHub
+        </a>
+      </div>
+
     </div>
   </div>
 
   <script type="module" src="/src/main.ts"></script>
 </body>
+
 </html>

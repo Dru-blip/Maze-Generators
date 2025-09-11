@@ -33,6 +33,7 @@ canvas {
     padding: 20px;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: 15px;
     border: 2px solid #2e2e2e;
 }
@@ -47,6 +48,7 @@ canvas {
 }
 
 select {
+    width: 100%;
     padding: 10px;
     border: 2px solid #2e2e2e;
     background: #121212;
@@ -58,6 +60,13 @@ select {
 
 select:hover {
     border-color: #00c853;
+}
+
+#btns{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .btn {
