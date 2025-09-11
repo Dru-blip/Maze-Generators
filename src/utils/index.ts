@@ -41,7 +41,7 @@ export const fcostComparator: ICompare<Cell> = (a: Cell, b: Cell) => {
  * @param {Cell} b - The second Cell object.
  * @return {number} The Manhattan distance between the two Cell objects.
  */
-export const manhattanDistance = (a: Cell, b: Cell) => {
+export const manhattanDistance = (a: Cell, b: Cell): number => {
   return Math.abs(a.row - b.row) + Math.abs(a.col - b.col);
 };
 
@@ -62,7 +62,7 @@ export const getRandomNumber = (max: number) => {
  * @param {Cell[][]} grid - A 2D array of Cell objects representing the grid.
  * @return {void} No return value, the grid is modified in-place.
  */
-export const resetGrid = (grid: Cell[][]) => {
+export const resetGrid = (grid: Cell[][]): void => {
   for (const row of grid) {
     for (const cell of row) {
       cell.reset();

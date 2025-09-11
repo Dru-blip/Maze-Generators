@@ -71,7 +71,7 @@ generateBtn.addEventListener("click", () => {
 
 solverBtn.addEventListener("click", () => {
   const { grid, noCols, noRows } = manager;
-  let path = solvers.dfs(grid, grid[0][0], grid[noRows - 1][noCols - 1]);
+  let path = solvers.gbefs(grid, grid[0][0], grid[noRows - 1][noCols - 1]);
 
   ctx.beginPath();
   for (let i = 0; i < path.length - 1; i++) {

@@ -11,7 +11,7 @@ export class GridManager {
   noRows: number;
   noCols: number;
 
-  constructor(cellSize:number,width: number, height: number) {
+  constructor(cellSize: number, width: number, height: number) {
     this.cellSize = cellSize;
     this.wallThickness = 2;
     this.grid = [];

@@ -5,28 +5,31 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vite + TS</title>
+  <title>Maze Generator</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <canvas id="canvas"></canvas>
-  <div class="actions">
-    <select id="algo-selector">
-      <option value="dfs">dfs</option>
-      <option value="binary-tree">binary tree</option>
-      <option value="random-walk">aldous-border</option>
-      <option value="prims">prims</option>
-      <option value="kruskals">kruskals</option>
-      <option value="hunt-kill">hunt and kill</option>
+  <div class="container">
+    <canvas id="canvas"></canvas>
 
-    </select>
-    <button id="generate" class="generate-btn">Generate</button>
-    <button id="solver" class="generate-btn">Solver</button>
+    <div class="actions">
+      <h2>Maze Controls</h2>
+      <label for="algo-selector">Algorithm:</label>
+      <select id="algo-selector">
+        <option value="dfs">Depth First Search</option>
+        <option value="binary-tree">Binary Tree</option>
+        <option value="random-walk">Aldous-Broder</option>
+        <option value="prims">Prim's</option>
+        <option value="kruskals">Kruskal's</option>
+        <option value="hunt-kill">Hunt & Kill</option>
+      </select>
+
+      <button id="generate" class="btn">Generate</button>
+      <button id="solver" class="btn">Solve</button>
+    </div>
   </div>
 
-
-  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
   <script type="module" src="/src/main.ts"></script>
 </body>
 </html>
